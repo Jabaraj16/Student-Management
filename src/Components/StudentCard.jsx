@@ -30,20 +30,21 @@ function StudentCard() {
       <div className=' w-full  grid grid-cols-6 gap-4 mt-10 '>
         <Card className='shadow-xl border mb-5 w-46'  >
           <CardActionArea>
-            
+
             <CardMedia className='bg-cover'
-            onClick={handleOpen}
+              onClick={handleOpen}
               component="img"
               height="100"
               image="https://cdn-icons-png.flaticon.com/512/5609/5609019.png"
               alt="green iguana"
             />
             <CardContent className='text-center' >
-              <Typography  gutterBottom variant="h5" component="div">
+              <Typography gutterBottom variant="h5" component="div">
                 <h1>Lizard</h1>
+                <span className='font-light text-sm'>BCA</span>
                 <div className='flex gap-2 justify-between mt-2'>
-                  <button className='bg-red-400'><i class="fa-solid fa-trash"></i></button>
-                 <EditStudent/>
+                  <button className=''><i class="fa-solid fa-trash"></i></button>
+                  <EditStudent />
                 </div>
               </Typography>
             </CardContent>

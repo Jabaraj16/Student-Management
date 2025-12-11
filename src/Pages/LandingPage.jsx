@@ -1,9 +1,19 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../Components/Header'
 import Footer from '../Components/Footer'
 
 function LandingPage() {
+    const [isLoggined,setIsLoggined]=useState(false)
+    useEffect(()=>{
+        const token=sessionStorage.getItem("token")
+        if(token){
+            setIsLoggined(true)
+        }else{
+            setIsLoggined(false)
+        }
+    },[])
+
     return (
         <div>
             <Header />
@@ -16,7 +26,9 @@ function LandingPage() {
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex non, earum repellendus tenetur tempora quae laboriosam qui ad, minima voluptatum fugit. Consequatur in autem nesciunt nostrum omnis officia nemo dolor?
                         </p>
-                        <Link to={"/login"}><button type="button" class=" mt-2  text-black p-3 font-bold bg-blue-300">GET START</button></Link>
+                        {setIsLoggined?<Link to={"/dashboard"}><button type="button" class=" mt-2  text-black p-3 font-bold bg-blue-300 hover:bg-blue-400 transition hover:translate-1 hover:scale-106">Manage Student</button></Link>:
+                            
+                        <Link to={"/login"}><button type="button" class=" mt-2  text-black p-3 font-bold bg-blue-300 hover:bg-blue-400">GET START</button></Link>}
                     </div>
                 </div>
 

@@ -27,7 +27,7 @@ function EditStudent() {
 
     return (
         <>
-            <button onClick={handleOpen} className='bg-orange-400'><i class="fa-solid fa-pen-to-square"></i></button>
+            <button onClick={handleOpen} className=''><i class="fa-solid fa-pen-to-square"></i></button>
 
             <Modal
                 open={open}
