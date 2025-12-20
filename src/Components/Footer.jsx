@@ -1,31 +1,46 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { GraduationCap } from 'lucide-react';
 
 function Footer() {
     return (
-        <div>
-            <footer class="bg-neutral-primary-soft rounded-base shadow-xs   bg-blue-300">
-                <div class="w-full  mx-auto p-4 md:py-8">
-                    <div class="sm:flex sm:items-center sm:justify-between sm:content-center">
-                        
-                          <Link to={'/'}>  <span class="text-heading self-center text-2xl font-semibold whitespace-nowrap">Student-Management</span></Link>
-
-                         <div className='flex flex-col justify-center items-center'>
-                        <span className='text-center'>Contact Us</span>
-                        <div className='flex gap-2 mt-3'>
-                             <input type="email"  class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Your@mail"  />
-                            <button type="submit" class="text-white bg-blue-600 bg-brand box-border border border-transparent hover:bg-brand-strong shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5">Submit</button>
-                        </div>
-                         </div>
+        <footer className="bg-gray-50 border-t border-gray-200">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div className="col-span-1 md:col-span-2">
+                        <Link to="/" className="flex items-center gap-2 text-primary-600 font-bold text-xl mb-4">
+                            <GraduationCap className="h-8 w-8" />
+                            <span>EduManager</span>
+                        </Link>
+                        <p className="text-gray-500 max-w-sm">
+                            Empowering educational institutions with modern management tools. Streamline your workflow today.
+                        </p>
                     </div>
-                    <hr class="my-6 border-default sm:mx-auto lg:my-8" />
-                    <span class="block text-sm text-body sm:text-center"> &copy; 2025 <a href="https://flowbite.com/" class="hover:underline">Jabaraj</a>. All Rights Reserved.</span>
+
+                    <div>
+                        <h3 className="font-semibold text-gray-900 mb-4">Product</h3>
+                        <ul className="space-y-2 text-gray-500">
+                            <li><Link to="#" className="hover:text-primary-600">Features</Link></li>
+                            <li><Link to="#" className="hover:text-primary-600">Pricing</Link></li>
+                            <li><Link to="#" className="hover:text-primary-600">Support</Link></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 className="font-semibold text-gray-900 mb-4">Legal</h3>
+                        <ul className="space-y-2 text-gray-500">
+                            <li><Link to="#" className="hover:text-primary-600">Privacy</Link></li>
+                            <li><Link to="#" className="hover:text-primary-600">Terms</Link></li>
+                        </ul>
+                    </div>
                 </div>
-            </footer>
 
-
-        </div>
-    )
+                <div className="mt-12 pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm">
+                    <p>&copy; {new Date().getFullYear()} EduManager. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    );
 }
 
-export default Footer
+export default Footer;

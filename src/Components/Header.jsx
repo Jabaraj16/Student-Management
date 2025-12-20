@@ -1,33 +1,35 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import TextField from '@mui/material/TextField';
-function Header({ insideDashboard,insideAllStudent }) {
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { GraduationCap } from 'lucide-react';
+
+function Header() {
     return (
-        <div>
-            <nav class="bg-blue-300  w-full z-20 top-0 start-0 ">
-                <div class=" flex flex-wrap items-center justify-between  p-4">
+        <nav className="bg-white border-b border-gray-100">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex justify-between h-16 items-center">
+                    <Link to="/" className="flex items-center gap-2 text-primary-600 font-bold text-xl">
+                        <GraduationCap className="h-8 w-8" />
+                        <span>EduManager</span>
+                    </Link>
 
-                    <div><Link to={'/'}> <span class="self-center text-xl text-heading font-semibold whitespace-nowrap">Student Management</span></Link></div>
-                    <div>
-                        {
-                            insideDashboard && <button className='border p-1 transition  hover:-translate-y-1 hover:scale-110 rounded bg-red-400'>Logout</button>
-                        }
-                        {
-                            insideAllStudent &&
-                            <div className='flex gap-7 justify-center items-center flex-wrap'>
-                                <div className=''><TextField className='' id="outlined-basic" label="Search by Name" variant="outlined" /></div>
-                                <div><Link to={'/dashboard'}><button className='border p-1 transition  hover:-translate-y-1 hover:scale-110 rounded bg-green-400'>Back</button></Link></div>
-                                <div><button className=' border p-1 transition  hover:-translate-y-1 hover:scale-110 rounded bg-red-400'>Logout</button></div>
-                            </div>
-                            
-                        }
+                    <div className="flex items-center gap-4">
+                        <Link
+                            to="/login"
+                            className="text-gray-600 hover:text-gray-900 font-medium text-sm"
+                        >
+                            Sign In
+                        </Link>
+                        <Link
+                            to="/register"
+                            className="bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors"
+                        >
+                            Get Started
+                        </Link>
                     </div>
-
                 </div>
-            </nav>
-
-        </div>
-    )
+            </div>
+        </nav>
+    );
 }
 
-export default Header
+export default Header;

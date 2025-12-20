@@ -1,87 +1,107 @@
-import React from 'react'
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import CardActionArea from '@mui/material/CardActionArea';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-import CardActions from '@mui/material/CardActions';
+import React, { useState } from 'react';
+import { Mail, Phone, BookOpen, Trash2, MoreVertical } from 'lucide-react';
+import { toast } from 'react-toastify';
 import EditStudent from './EditStudent';
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 500,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
-function StudentCard() {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  return (
-    <div className='mt-5  container mx-auto '>
-      <h1 className='text-4xl'>All Student List <hr /></h1>
-      <div className=' w-full  grid grid-cols-6 gap-4 mt-10 '>
-        <Card className='shadow-xl border mb-5 w-46'  >
-          <CardActionArea>
+import { serverURL } from '../Connections/serverURL';
+import { deleteStudentAPI } from '../Connections/allAPI';
 
-            <CardMedia className='bg-cover'
-              onClick={handleOpen}
-              component="img"
-              height="100"
-              image="https://cdn-icons-png.flaticon.com/512/5609/5609019.png"
-              alt="green iguana"
-            />
-            <CardContent className='text-center' >
-              <Typography gutterBottom variant="h5" component="div">
-                <h1>Lizard</h1>
-                <span className='font-light text-sm'>BCA</span>
-                <div className='flex gap-2 justify-between mt-2'>
-                  <button className=''><i class="fa-solid fa-trash"></i></button>
-                  <EditStudent />
-                </div>
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
+export default function StudentCard({ student, refresh }) {
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  const handleDelete = async () => {
+    const token = sessionStorage.getItem("token");
+    if (token) {
+      try {
+        const result = await deleteStudentAPI(student._id, {
+          "Authorization": `Bearer ${token}`
+        });
+        if (result.status === 200) {
+          toast.success("Student deleted successfully");
+          refresh();
+        } else {
+          toast.error(result.response.data);
+        }
+      } catch (err) {
+        console.error(err);
+        toast.error("Failed to delete student");
+      }
+    }
+  };
+
+  return (
+    <div className="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow overflow-hidden flex flex-col">
+      {/* Card Header with Image and Status */}
+      <div className="relative h-48 bg-gray-100">
+        <img
+          src={`${serverURL}/uploads/${student.image}`}
+          alt={student.name}
+          className="w-full h-full object-cover"
+          onError={(e) => { e.target.src = 'https://cdn-icons-png.flaticon.com/512/5609/5609019.png' }}
+        />
+        <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-medium backdrop-blur-md ${student.status === 'active'
+            ? 'bg-green-500/10 text-green-700 bg-white'
+            : 'bg-red-500/10 text-red-700 bg-white'
+          }`}>
+          {student.status.charAt(0).toUpperCase() + student.status.slice(1)}
+        </div>
       </div>
 
+      {/* Card Content */}
+      <div className="p-5 flex-1 flex flex-col">
+        <div className="mb-4">
+          <h3 className="text-lg font-bold text-gray-900 group-hover:text-primary-600 transition-colors">
+            {student.name}
+          </h3>
+          <div className="flex items-center gap-2 text-primary-600 text-sm font-medium mt-1">
+            <BookOpen className="h-4 w-4" />
+            <span>{student.course}</span>
+            <span className="text-gray-300">•</span>
+            <span className="text-gray-500">{student.batch}</span>
+          </div>
+        </div>
 
+        <div className="space-y-2 mb-6 flex-1">
+          <div className="flex items-center gap-2 text-sm text-gray-500">
+            <Mail className="h-4 w-4" />
+            <span className="truncate">{student.email}</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-gray-500">
+            <Phone className="h-4 w-4" />
+            <span>{student.phone}</span>
+          </div>
+        </div>
 
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        {/* Actions */}
+        <div className="flex items-center justify-between pt-4 border-t border-gray-50">
+          <EditStudent data={student} refresh={refresh} />
 
-      >
-        <Box sx={style} >
-          <Card className='flex items-center justify-center content-center flex-col text-center' >
-            <div className=''><img className='w-56 ' src="https://cdn-icons-png.flaticon.com/512/5609/5609019.png" alt="" /></div>
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
-                Lizard
-              </Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                <h1>Name: jabarah</h1>
-                <h1>Email: jabarajraju1590@gmail.com</h1>
-                <h1>Phone:</h1>
-                <h1>Batch:</h1>
-                <h1>Course:</h1>
-                <h1>Status:</h1>
-              </Typography>
-            </CardContent>
-          </Card>
-        </Box>
-      </Modal>
+          {!showDeleteConfirm ? (
+            <button
+              onClick={() => setShowDeleteConfirm(true)}
+              className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+              title="Delete Student"
+            >
+              <Trash2 className="h-4 w-4" />
+            </button>
+          ) : (
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-red-600 font-medium">Confirm?</span>
+              <button
+                onClick={handleDelete}
+                className="px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700"
+              >
+                Yes
+              </button>
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded hover:bg-gray-300"
+              >
+                No
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
-  )
+  );
 }
-
-export default StudentCard
